@@ -1,4 +1,4 @@
-GenerateVmAvailablity <- function(tasks, max.interested.submiTtime = Inf) {
+GenerateVmAvailability <- function(tasks, max.interested.submiTtime = Inf) {
      
      data.result <- tasks %>% filter(submitTime <= max.interested.submiTtime) %>% collect(n = Inf) %>%
           mutate(priorityStr = ifelse(priority == 0, "prod", ifelse(priority == 1, "batch", "free")), availability = runtime/(finishTime - submitTime)) 
@@ -11,7 +11,7 @@ CalcMeanVmAvailability <- function(tasks) {
      return(data.result)
 }
 
-GenerateVmAvailablityOldScheme <- function(tasks, max.interested.submiTtime = Inf) {
+GenerateVmAvailabilityOldScheme <- function(tasks, max.interested.submiTtime = Inf) {
 
      data.result <- tasks %>% filter(submitTime <= max.interested.submiTtime) %>% collect(n = Inf) %>%
           mutate(priorityStr = ifelse(priority == 0, "prod", ifelse(priority == 1, "batch", "free")), availability = runtime/(finish_time - submit_time))
@@ -38,12 +38,12 @@ GetSLOFulfillment <- function(tasks, interested.priority, slo.target) {
      tasks <- tasks %>% filter(priority == interested.priority) %>% collect(n = Inf)
 
      total.tasks <- (tasks %>% summarise(total = n()))$total
-     violations <- (tasks %>% mutate(availability = runtime/(finishTime - submitTime)) %>% filter(availability < slo) %>% summarise(violations = n()))$violations
+     violations <- (tasks %>% mutate(availability = runtime/(finishTime - submitTime)) %>% filter(availability < slo.target) %>% summarise(violations = n()))$violations
      fulfillment.value <- 1 - (violations/total.tasks)
      return(fulfillment.value)
 }
 
-GetInterestedTasks <- function(finishedTasks, checkpointed.tasks = NULL, max.interested.time = Inf) {
+GetInterestedTasks <- function(tasks, checkpointed.tasks = NULL, max.interested.time = Inf) {
      
      tasks <- tasks %>% filter(finishTime <= max.interested.time) %>% collect(n = Inf)  
      
