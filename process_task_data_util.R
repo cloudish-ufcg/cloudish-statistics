@@ -11,19 +11,6 @@ CalcMeanVmAvailability <- function(tasks) {
      return(data.result)
 }
 
-GenerateVmAvailabilityOldScheme <- function(tasks, max.interested.submiTtime = Inf) {
-
-     data.result <- tasks %>% filter(submitTime <= max.interested.submiTtime) %>% collect(n = Inf) %>%
-          mutate(priorityStr = ifelse(priority == 0, "prod", ifelse(priority == 1, "batch", "free")), availability = runtime/(finish_time - submit_time))
-     return(data.result)
-}
-
-CalcMeanVmAvailabilityOldScheme <- function(tasks) {
-     
-     data.result <- tasks %>% group_by(priority) %>% summarise(av.mean = mean(availability), av.var = var(availability), av.sd = sd(availability))
-     return(data.result)
-}
-
 SummariseMigrationsPerHour <- function(tasks) {
      
      data.result <- tasks %>% group_by(priority) %>% mutate(migrations.per.hour = migrations/(runtime/(60 * 60))) %>% 

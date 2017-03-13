@@ -8,8 +8,19 @@ LoadDatabaseData <- function(filename, tablename) {
 }
 
 # Writes the data frame in a specific file
-WriteData <- function(data.result, filename) {
-     write.table(data.result, filename, quote = F, row.names = F)
+WriteData <- function(data.result, output.dir.path, filename) {
+     full.filename <-  paste(output.dir.path, "/", filename, sep = "")
+     write.table(data.result, full.filename, quote = F, row.names = F)
+}
+
+CreateOutputDir <- function(output.dir, simulation.date, datacenter.type, preemption.policy) {
+     dir.name.data = paste(output.dir, "/", simulation.date, "-", datacenter.type, "-", preemption.policy, sep = "")
+     dir.create(dir.name.data)
+     
+     dir.name.img = paste(output.dir, "/", simulation.date, "-", datacenter.type, "-", preemption.policy, "/img", sep = "")
+     dir.create(dir.name.img)
+     
+     return(list("data" = dir.name.data, "img" = dir.name.img))
 }
 
 GetTaskData <- function(input.dir.base, datacenter.type, simulation.date, preemption.policy) {
