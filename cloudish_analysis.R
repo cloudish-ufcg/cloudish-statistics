@@ -95,7 +95,7 @@ opts <- add_argument(opts, "--checkpoint-file",
                      short = "-C")
 
 opts <- add_argument(opts, "--simulation-timestamp",
-                     help = "Date em que a simulação foi gerada",
+                     help = "Simulation date",
                      short = "-T")
 
 opts <- add_argument(opts, "--datacenter-type",
@@ -107,7 +107,7 @@ opts <- add_argument(opts, "--preemption-policy",
                      short = "-P")
 
 opts <- add_argument(opts, "--analysis-type",
-                     help = "Analysis to perform: usage|task|datacenter",
+                     help = "Analysis to perform: usage|task|datacenter|all",
                      short = "-A")
 
 opts <- add_argument(opts, "--generate-plot",
