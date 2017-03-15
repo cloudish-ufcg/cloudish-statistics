@@ -15,12 +15,23 @@ WriteData <- function(data.result, output.dir.path, filename, overwrite.data = T
      }
 }
 
+ReadData <- function(output.dir.path, filename) { 
+     full.filename <-  paste(output.dir.path, "/", filename, sep = "")
+     data.result <- NULL
+     if (file.exists(full.filename)) {
+          data.result <- read.table(full.filename, header = T)
+     } else {
+          warning("Data file not found")
+     }
+     return(data.result)
+}
+
 CreateOutputDir <- function(output.dir, simulation.date, datacenter.type, preemption.policy) {
      dir.name.data = paste(output.dir, "/", simulation.date, "-", datacenter.type, "-", preemption.policy, sep = "")
-     dir.create(dir.name.data)
+     dir.create(dir.name.data, showWarnings = F)
      
      dir.name.img = paste(output.dir, "/", simulation.date, "-", datacenter.type, "-", preemption.policy, "/img", sep = "")
-     dir.create(dir.name.img)
+     dir.create(dir.name.img, showWarnings = F)
      
      return(list("data" = dir.name.data, "img" = dir.name.img))
 }
